@@ -41,11 +41,12 @@ export class ModalDirective {
 
 		this.renderer.setElementClass(document.body, ClassName.OPEN,true);
 
-		this.showElement();
+		this.showBackdrop(() => this.showElement());
 
 	}
 
 	private showElement(){
+		console.log('hello')
 		this.renderer.setElementAttribute(this.element.nativeElement, 'aria-hidden', 'false');
 		this.renderer.setElementStyle(this.element.nativeElement, 'display', 'block');
 		this.renderer.setElementProperty(this.element.nativeElement, 'scrollTop', 0);
@@ -55,10 +56,10 @@ export class ModalDirective {
 
 	}
 
-	public hide(event){
-		if(event){
-			event.prevenDefault();
-		}
+	public hide(){
+		// if(event){
+		// 	event.prevenDefault();
+		// }
 
 		if(!this._isShown){
 			return;
@@ -84,8 +85,9 @@ export class ModalDirective {
 
 	showBackdrop(callback) {
 		if(this._isShown){
-
+			
 		}
+		callback();
 	}
 
 
