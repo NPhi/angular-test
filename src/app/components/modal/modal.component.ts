@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, HostListener } from '@angular/core'
+import { Directive, ElementRef, Renderer, HostListener, OnDestroy } from '@angular/core'
 
 const ClassName:any = {
   SCROLLBAR_MEASURER: 'modal-scrollbar-measure',
@@ -13,13 +13,23 @@ const ClassName:any = {
 	selector: '[bsModal]',
 	exportAs: 'bs-modal'
 })
-export class ModalDirective {
+export class ModalDirective implements OnDestroy {
 
 	_isShown = false
 	timerHideModal;
 
 	constructor(private renderer : Renderer,
 				private element : ElementRef){}
+
+	ngOnDestroy() {
+		if(this._isShown){
+			this._isShown = false;
+			this.hide();
+		}
+		//set properties undefined
+		this._isShown = void 0;
+		this.timerHideModal = void 0;
+	}
 
 	@HostListener('click', ['$event'])
 	public onClick(event){
@@ -29,6 +39,10 @@ export class ModalDirective {
 		}
 
 		this.hide();
+	}
+
+	public toggle(){
+		return this._isShown ? this.hide() : this.show();
 	}
 
 	public show(){
@@ -46,7 +60,7 @@ export class ModalDirective {
 	}
 
 	private showElement(){
-		console.log('hello')
+
 		this.renderer.setElementAttribute(this.element.nativeElement, 'aria-hidden', 'false');
 		this.renderer.setElementStyle(this.element.nativeElement, 'display', 'block');
 		this.renderer.setElementProperty(this.element.nativeElement, 'scrollTop', 0);
