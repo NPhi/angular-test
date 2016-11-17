@@ -1,0 +1,25 @@
+<!-- <tags-input-item
+    [text]="tag"
+    [index]="index"
+    [selected]="selectedTag === index"
+    (tagRemoved)="_removeTag($event)"
+    *ngFor="#tag of tagsList; #index = index">
+  </tags-input-item> -->
+  <tags-input-item
+    *ngFor="let tag of tagsList; let i = index"
+
+    [text]="tag"
+    [index]="i"
+    [selected]="selectedTag === i"
+    (tagRemoved)="_removeTag($event)"
+  ></tags-input-item>
+  <input
+    class="form-control"
+    type="text"
+    name="inputValue"
+    [placeholder]="placeholder"
+    [ngModel]="inputValue"
+    (ngModelChange)="onInputChanging($event)"
+    (paste)="inputPaste($event)"
+    (keydown)="inputChanged($event)"
+    />
