@@ -36,7 +36,6 @@ export class TagsInputComponent implements ControlValueAccessor {
     if (this.data) this.tagsList = this.data;
     this.onChange(this.tagsList);
     this.delimiter = parseInt(this.delimiterCode);
-    console.log(this.selfControl);
   }
 
   ngAfterViewInit() {
