@@ -1,0 +1,15 @@
+<div class="react-grid-layout" [ngStyle]="setStyles()">
+<grid-item *ngFor="let l of layout;let i=index;" 
+	[containerWidth]= "width"
+	[rowHeight]="rowHeight"
+	[cols]="cols"
+	[containerPadding]="containerPadding"
+	[margin]="margin"
+	(onDrag)="onDrag($event)"
+	[isStatic]="l.static"
+	[w]="l.w"
+	[h]="l.h"
+	[x]="l.x"
+	[y]="l.y"
+	[i]="l.i"></grid-item>
+</div>

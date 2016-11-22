@@ -9,13 +9,22 @@ import { TagsInputComponent } from './components/tags-input/tags-input.component
 import { TagsInputItemComponent } from './components/tags-input-item/tags-input-item.component';
 import { AnimatedMsgComponent } from './components/animated-msg/animated-msg.component'
 
+import {
+  DraggableDirective,
+  GridItemComponent,
+  GridLayoutComponent
+} from './components/index'
+
 @NgModule({
   declarations: [
     AppComponent,
     ModalDirective,
     TagsInputComponent,
     TagsInputItemComponent,
-    AnimatedMsgComponent
+    AnimatedMsgComponent,
+    DraggableDirective,
+    GridItemComponent,
+    GridLayoutComponent
   ],
   imports: [
     BrowserModule,
