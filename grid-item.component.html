@@ -1,0 +1,16 @@
+<div 
+	class="item react-grid-item"
+	[class.react-draggable-dragging]="dragging"
+	[ngStyle]="setStyles()"
+	dragEnabled
+	(onDragStart)="handleOnDragStart($event)"
+	(onDrag)="handleOnDrag($event)"
+	(onDragStop)="handleOnDragStop($event)"
+	>
+  <div *ngIf="x > 0">
+  {{mapYWithTime()}} - {{getEndHour()}}
+  <p *ngIf="x !== 1">Room : {{x - 1}}</p>
+  </div>
+  
+  <ng-content></ng-content>
+</div>
