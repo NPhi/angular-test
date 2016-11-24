@@ -1,5 +1,24 @@
 .react-grid-layout {
-  background-color: #e7e7e7;
   position: relative;
   transition: height 200ms ease;
+}
+.calendar-table {
+	border: 1px solid #000;
+	margin: 10px;
+	position: relative;
+    left: 350px;
+}
+
+.sideLayout {
+	border: 1px solid #000;
+	position: fixed;
+	width: 250px;
+	height: 100vh;
+	margin: 20px;
+	left: 0;
+	top: 0;
+}
+
+.calendar-table tr {
+
 }

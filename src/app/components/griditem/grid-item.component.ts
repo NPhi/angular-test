@@ -31,13 +31,15 @@ export class GridItemComponent implements DoCheck{
 
 	@Input() isStatic = false;
 
+	@Input() isSideLayout = false;
+
 	@Output() onDrag = new EventEmitter<any>();
 	@Output() onDragStop = new EventEmitter<any>();
 
 	constructor(){}
 
 	ngDoCheck() { 
-		const {x,y,w,h} = this;
+		let {x,y,w,h} = this;
 
 		const pos = this.calcPosition(x,y,w,h);
 
@@ -117,8 +119,9 @@ export class GridItemComponent implements DoCheck{
 			'width': this.position.width + 'px',
 			'height': this.position.height + 'px',
 			'top': this.position.top + 'px',
-			'left': this.position.left + 'px'
+			'left': this.position.left + 'px',
 		}
+
 		return styles;
 	}
 
@@ -129,11 +132,14 @@ export class GridItemComponent implements DoCheck{
 	}
 
 	calcXY(top, left) {
-	    const {cols, rowHeight, w, h,margin,isStatic} = this;
+	    const {cols, rowHeight, w, h,margin,isSideLayout} = this;
 	    const colWidth = this.calcColWidth();
 
 	    let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
-	    let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+	   	
+	   	const scrollTop = x === 0 || !isSideLayout ? 0 : window.pageYOffset;
+
+	    let y = Math.round((top + scrollTop - margin[1]) / (rowHeight + margin[1]));
 
 	    // Capping
 	    x = Math.max(Math.min(x, cols - w), 0);
@@ -143,10 +149,31 @@ export class GridItemComponent implements DoCheck{
 	    if(x === 1) {
 	    	x = 0
 	    }
-	    
+
 	    return {x, y};
+  	}
+
+  	mapYWithTime() {
+  		return this.getTimeY().toLocaleTimeString()
+  	}
+
+  	getTimeY() {
+  		const m = this.y * 2.5
+  		return displayByHour(m)
+  	}
+
+  	getEndHour() {
+  		const m = this.h * 2.5
+  		return addMinutes(this.getTimeY(),m).toLocaleTimeString()
   	}
 }
 
+function displayByHour(minutes) {
+	let d = new Date("October 13, 2014 8:00:00");
+	return addMinutes(d,minutes)
+}
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
+}
 
 

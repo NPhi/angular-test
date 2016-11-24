@@ -4,17 +4,15 @@
   position: absolute;
   background: #ccc;
   border: 1px solid black;
+  z-index: 1;
 }
 .react-grid-item.cssTransforms {
   transition-property: transform;
 }
-.react-grid-item.resizing {
-  z-index: 1;
-}
 
 .react-grid-item.react-draggable-dragging {
   transition: none;
-  z-index: 3;
+  z-index: 999;
 }
 
 .react-grid-item.react-grid-placeholder {

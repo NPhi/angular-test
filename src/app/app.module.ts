@@ -12,7 +12,8 @@ import { AnimatedMsgComponent } from './components/animated-msg/animated-msg.com
 import {
   DraggableDirective,
   GridItemComponent,
-  GridLayoutComponent
+  GridLayoutComponent,
+  DemoNumber
 } from './components/index'
 
 @NgModule({
@@ -24,7 +25,8 @@ import {
     AnimatedMsgComponent,
     DraggableDirective,
     GridItemComponent,
-    GridLayoutComponent
+    GridLayoutComponent,
+    DemoNumber
   ],
   imports: [
     BrowserModule,

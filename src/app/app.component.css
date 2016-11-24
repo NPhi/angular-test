@@ -10,11 +10,7 @@ h2, h3 {
   font-weight: lighter;
 }
 body {
-  margin: 2em;
 }
 
 
-.app-container {
-  display: flex;
-  justify-content: space-around;
-}
+

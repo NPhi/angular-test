@@ -7,5 +7,10 @@
 	(onDrag)="handleOnDrag($event)"
 	(onDragStop)="handleOnDragStop($event)"
 	>
-	{{i}}. Grid Item {{x}} {{y}}
+  <div *ngIf="x > 0">
+  {{mapYWithTime()}} - {{getEndHour()}}
+  <p *ngIf="x !== 1">Room : {{x - 1}}</p>
+  </div>
+  
+  <ng-content></ng-content>
 </div>

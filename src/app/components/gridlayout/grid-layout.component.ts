@@ -1,4 +1,4 @@
-import { Component, Input,ContentChildren, AfterViewInit,ViewChildren,QueryList,OnInit } from '@angular/core';
+import { Component, Input,ContentChildren, AfterViewInit,ViewChildren,QueryList,OnInit,Pipe, PipeTransform } from '@angular/core';
 
 export type LayoutItemRequired = {w: number, h: number, x: number, y: number, i: string};
 export type LayoutItem = LayoutItemRequired &
@@ -16,11 +16,24 @@ export type DragCallbackData = {
 export type DragEvent = {e: Event} & DragCallbackData;
 export type Size = {width: number, height: number};
 export type ResizeEvent = {e: Event, node: HTMLElement, size: Size};
-  		
+
+
+@Pipe({name: 'demoNumber'})
+export class DemoNumber implements PipeTransform {
+  transform(value, args:string[]) : any {
+    let res = [];
+    for (let i = 0; i <= value; i++) {
+        res.push(i);
+      }
+      return res;
+  }
+}
+
 @Component({
   selector: 'grid-layout',
   templateUrl: './grid-layout.component.html',
-  styleUrls: ['./grid-layout.component.css']
+  styleUrls: ['./grid-layout.component.css'],
+  
 })
 export class GridLayoutComponent implements OnInit {
 	
@@ -35,23 +48,37 @@ export class GridLayoutComponent implements OnInit {
   layoutHeight;
   propLayout1;
   children;
-	
+	duration;
+  sideLayout = [];
+  mainLayout = [];
 	constructor(){
 
     this.rowHeight = 10;
-    this.containerPadding = [10,10];
-    this.margin = [10,10];
+    this.containerPadding = [0,0];
+    this.margin = [0,0];
+    this.duration = 360/5
     this.propLayout1 = [
-        {i: 'a', x: 0, y: 0, w: 1, h: 12},
-        {i: 'b', x: 0, y: 0, w: 1, h: 2},
-        {i: 'c', x: 0, y: 0, w: 1, h: 2},
-        {i: 'd', x: 0, y: 0, w: 1, h: 2},
-        {i: 'e', x: 0, y: 0, w: 1, h: 2},
-        {i: 'timeline', x: 1, y: 0, w: 1, h: 6, static : true}
+        {i: 'a', x: 0, y: 0, w: 1, h: 60/2.5},
+        {i: 'qeqe', x: 0, y: 0, w: 1, h: 30/2.5},
+        {i: 'c', x: 0, y: 0, w: 1, h: 15/2.5},
+        {i: 'd', x: 0, y: 0, w: 1, h: 20/2.5},
+        {i: 'e', x: 0, y: 0, w: 1, h: 10/2.5},
+        {i: 'adsa', x: 0, y: 0, w: 1, h: 60/2.5},
+        {i: 'aass', x: 0, y: 0, w: 1, h: 60/2.5},
+        {i: 'aqqq', x: 0, y: 0, w: 1, h: 60/2.5},
+        // {i: 'timeline', x: 1, y: 0, w: 1, h: this.duration, static : true}
      ];
 
     this.layout = synchronizeLayoutWithChildren(this.propLayout1,this.cols,true);
     this.layoutHeight = this.containerHeight();
+    console.log(this.layout)
+    this.layout.forEach(l => {
+      if(l.x === 0) {
+        this.sideLayout.push(l)
+      }else{
+        this.mainLayout.push(l)
+      }
+    })
 
 	}
 
@@ -73,8 +100,24 @@ export class GridLayoutComponent implements OnInit {
 		if(!l) return;
 	  this.layout = compact(moveElement(this.layout,l,x,y,false),true);
     this.layoutHeight = this.containerHeight();
+    // this.sideLayout = this.layout.filter(l => l.x === 0)
+    // this.mainLayout = this.layout.filter(l => l.x !== 0)
 
 	}
+
+  onDragStop({i,x,y,event}) {
+    let {layout} = this;
+
+    let l = getLayoutItem(this.layout,i);
+
+    if(!l) return;
+    this.layout = compact(moveElement(this.layout,l,x,y,false),true);
+    this.layoutHeight = this.containerHeight();
+    this.sideLayout = this.layout.filter(l => l.x === 0)
+    this.mainLayout = this.layout.filter(l => l.x !== 0)
+  }
+
+  
 
   setStyles(){
     const styles = {
@@ -84,11 +127,24 @@ export class GridLayoutComponent implements OnInit {
     return styles;
   }
 
+  getTime(min) {
+    return displayByHour(min).toLocaleTimeString()
+  }
+
+
+}
+
+function displayByHour(minutes) {
+  let d = new Date("October 13, 2014 8:00:00");
+  return addMinutes(d,minutes)
+}
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
 }
 
 
 function synchronizeLayoutWithChildren(initialLayout, cols, verticalCompact) {
-  initialLayout = initialLayout || [];
+  // initialLayout = initialLayout || [];
 
   // Generate one layout item per child.
   let layout: Layout = initialLayout;
@@ -102,6 +158,7 @@ function synchronizeLayoutWithChildren(initialLayout, cols, verticalCompact) {
 	//         layout[i] = cloneLayoutItem({w: 1, h: 1, x: 0, y: bottom(layout), i: child.key || "1"});
 	//     }
  //  });
+   
 
   // Correct the layout.
   layout = correctBounds(layout, {cols: cols});
